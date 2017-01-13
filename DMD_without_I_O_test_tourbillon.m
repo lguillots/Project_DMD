@@ -1,4 +1,4 @@
-
+clear all
 timestep = 250*3.5e-9;
 diameter = 3.78*1.67e-3;
 speed = 937.7594;
@@ -23,17 +23,9 @@ for i=2:size(M_u,2),
     M_V = vertcat(M_V, M_v(:,i));
 end
 
-U1=zeros(50000,255);
-V1=zeros(50000,255);
-U2=zeros(50000,255);
-V2=zeros(50000,255);
-
 % LECTURE DE L'INTEGRALITE DU REPERTOIRE
 
 for i=1:nombre_total_fichiers,
-    
-    M_U_temp = M_u(:,1);
-    M_V_temp = M_v(:,1);
     
     
     for j=2:size(M_u,2),
@@ -48,8 +40,10 @@ for i=1:nombre_total_fichiers,
             M_u(:,j) = u;
         end
     
-        if j==size(M,2),
-            for k=1:size(M,2),
+        if j==size(M_u,2),
+            M_U_temp = M_u(:,1);
+            M_V_temp = M_v(:,1);
+            for k=2:size(M_u,2),
                 M_U_temp = vertcat(M_U_temp, M_u(:,k));
                 M_V_temp = vertcat(M_V_temp, M_v(:,k));
             end
