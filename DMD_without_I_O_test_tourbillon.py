@@ -5,7 +5,6 @@ Created on Thu Oct 13 16:50:19 2016
 @author: l.guillot-salomon
 """
 
-
 #IMPORTATION DES MODULES
 
 import numpy as np
@@ -102,8 +101,8 @@ Udmd = np.dot(U1,U_vector)
 Vdmd = np.dot(V1,V_vector)
 
 # CALCUL DE L'INTENSITE DES MODES NON TRIES (TEMP)
-U_mode_energy_temp = np.empty([nombre_total_fichiers -1,1])
-V_mode_energy_temp = np.empty([nombre_total_fichiers -1,1])
+U_mode_energy_temp = np.zeros([nombre_total_fichiers -1,1])
+V_mode_energy_temp = np.zeros([nombre_total_fichiers -1,1])
 
 for i in range(nombre_total_fichiers -1-1):
     U_mode_energy_temp[i] = np.linalg.norm(Udmd[:,i],2)
@@ -117,8 +116,8 @@ V_mode_energy = np.sort(V_mode_energy_temp,0)
 Uindices = np.argsort(U_mode_energy_temp,0)  
 Vindices = np.argsort(V_mode_energy_temp,0) 
  
-Utemp = np.empty(np.shape(Udmd),dtype=complex)
-Vtemp = np.empty(np.shape(Vdmd),dtype=complex)
+Utemp = np.zeros(np.shape(Udmd),dtype=complex)
+Vtemp = np.zeros(np.shape(Vdmd),dtype=complex)
 
 for i in range(nombre_total_fichiers -1-1):
     Utemp[:,i] = Udmd[:,Uindices[i,0]]
@@ -127,8 +126,8 @@ for i in range(nombre_total_fichiers -1-1):
 Udmd = Utemp
 Vdmd = Vtemp
 
-Utemp3 = np.empty(np.shape(U_vector),dtype=complex)
-Vtemp3 = np.empty(np.shape(V_vector),dtype=complex)
+Utemp3 = np.zeros(np.shape(U_vector),dtype=complex)
+Vtemp3 = np.zeros(np.shape(V_vector),dtype=complex)
 
 for i in range(nombre_total_fichiers -1-1):
     Utemp3[:,i] = U_vector[:,Uindices[i,0]]
@@ -138,8 +137,8 @@ U_vector = Utemp3
 V_vector = Vtemp3
 
 # CLASSEMENT DES VALEURS PROPRES
-Utemp2 = np.empty(U_lambda.shape, dtype=complex)
-Vtemp2 = np.empty(U_lambda.shape, dtype=complex)
+Utemp2 = np.zeros(U_lambda.shape, dtype=complex)
+Vtemp2 = np.zeros(U_lambda.shape, dtype=complex)
 
 for i in range(nombre_total_fichiers -1-1):
     j = Uindices[i,0]
@@ -151,8 +150,8 @@ U_lambda = Utemp2
 V_lambda = Vtemp2
 
 # CALCUL DES FREQUENCES
-U_mode_frequency = np.empty([nombre_total_fichiers -1,1])
-V_mode_frequency = np.empty([nombre_total_fichiers -1,1])
+U_mode_frequency = np.zeros([nombre_total_fichiers -1,1])
+V_mode_frequency = np.zeros([nombre_total_fichiers -1,1])
 
 for i in range(nombre_total_fichiers -1-1):
     
@@ -163,8 +162,8 @@ for i in range(nombre_total_fichiers -1-1):
         V_mode_frequency[i] = np.imag(np.log2(V_lambda[i,i]))/timestep/2/(np.pi)*diameter/speed
 
 # CALCUL DES COEFFICIENTS TEMPORELS DES DIFFERENTS MODES
-Uphi = np.empty(np.shape(Udmd),dtype=complex)
-Vphi = np.empty(np.shape(Vdmd),dtype=complex)
+Uphi = np.zeros(np.shape(Udmd),dtype=complex)
+Vphi = np.zeros(np.shape(Vdmd),dtype=complex)
 
 for i in range(nombre_total_fichiers -1-1):
     Uphi[:,i]= Udmd[:,i] / np.linalg.norm(Udmd[:,i],2)
