@@ -1,3 +1,4 @@
+clear all
 
 timestep = 250*3.5e-9;
 diameter = 3.78*1.67e-3;

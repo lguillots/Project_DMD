@@ -8,7 +8,7 @@ M_u = u*ones(200,250);
 M_v = u*ones(200,250);
 Omega = 2;
 
-for i=51:150,
+for i=50:150,
     for j=1:100,
         M_v(i,j) = u+Omega*(j-50)/sqrt(i*i+j*j);
         M_u(i,j) = u+Omega*(i-100)/sqrt(i*i+j*j);
@@ -27,37 +27,38 @@ end
 
 for i=1:nombre_total_fichiers,
     
+    if i < nombre_total_fichiers,
+        U1(:,i)=M_U(:,1);
+        V1(:,i)=M_V(:,1);
     
-    for j=2:size(M_u,2),
+        for j=1:size(M_u,2),
         
-        if j>i,
-            M_v(:,j) = M_v(:,j-1);
-            M_u(:,j) = M_u(:,j-1);
-        end
+            if j>i,
+                M_v(:,j) = M_v(:,j-1);
+                M_u(:,j) = M_u(:,j-1);
+            end
     
-        if j<i,
-            M_v(:,j) = u;
-            M_u(:,j) = u;
-        end
+            if j<i,
+                M_v(:,j) = u;
+                M_u(:,j) = u;
+            end
     
-        if j==size(M_u,2),
-            M_U_temp = M_u(:,1);
-            M_V_temp = M_v(:,1);
-            for k=2:size(M_u,2),
-                M_U_temp = vertcat(M_U_temp, M_u(:,k));
-                M_V_temp = vertcat(M_V_temp, M_v(:,k));
+            if j==size(M_u,2),
+                M_U_temp = M_u(:,1);
+                M_V_temp = M_v(:,1);
+                for k=2:size(M_u,2),
+                    M_U_temp = vertcat(M_U_temp, M_u(:,k));
+                    M_V_temp = vertcat(M_V_temp, M_v(:,k));
+                end
+                M_U = M_U_temp;
+                M_V = M_V_temp;
             end
         end
     end
     
-    if i < nombre_total_fichiers,
-        U1(:,i)=M_U_temp;
-        V1(:,i)=M_V_temp;
-    end
-    
     if i > 1,
-        U2(:,i-1)=M_U_temp;
-        V2(:,i-1)=M_V_temp;
+        U2(:,i-1)=M_U(:,1);
+        V2(:,i-1)=M_V(:,1);
     end
     
 end

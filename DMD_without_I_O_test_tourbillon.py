@@ -12,28 +12,25 @@ import math as m
 
 #CONSTANTES UTILES
 
-
-
 timestep = 250*3.5e-9
 diameter = 3.78*1.67e-3
 speed = 937.7594
 nombre_total_fichiers=256
 u=10
-M_u = u*np.ones([200,250])
-M_v = u*np.ones([200,250])
 Omega = 2;
 
+M_u = u*np.ones([200,250])
+M_v = u*np.ones([200,250])
 
-for i in range(50,149,1):
+for i in range(49,149,1):
     for j in range(99):
-        M_v[i,j] = u+Omega*(j-49)/m.sqrt(i*i+j*j)
-        M_u[i,j] = u+Omega*(i-99)/m.sqrt(i*i+j*j)
+        M_v[i,j] = u+Omega*(j-49)/m.sqrt((i+1)**2+(j+1)**2)
+        M_u[i,j] = u+Omega*(i-99)/m.sqrt((i+1)**2+(j+1)**2)
 
         
 M_U = np.vstack(np.split(M_u,250,1))         
 M_V = np.vstack(np.split(M_v,250,1))
-
-
+               
 U1=np.zeros([50000,255])
 V1=np.zeros([50000,255])
 U2=np.zeros([50000,255])
@@ -41,35 +38,31 @@ V2=np.zeros([50000,255])
 
 #LECTURE DE L'INTEGRALITE DU REPERTOIRE
 
-
 for i in range(nombre_total_fichiers-1):
-    
-    for j in range(0,np.shape(M_u)[1]-1):
-        
-        if j>i:
-            M_v[:,j] = M_v[:,j-1]
-            M_u[:,j] = M_u[:,j-1]
-    
-        if j<=i:
-            M_v[:,j] = u
-            M_u[:,j] = u
+
+        if i <= nombre_total_fichiers-1:
+            U1[:,i]=M_U[:,0]
+            V1[:,i]=M_V[:,0]
+                
+            for j in range(np.shape(M_u)[1]-1):
             
-        if j==1:
-            M_U_temp = M_U
-            M_V_temp = M_V
-            
-        if j==np.shape(M_u)[1]-1:
-            for k in range((M_u)[1]-1):
-                M_U_temp = np.vstack(np.split(M_u,250,1))
-                M_V_temp = np.vstack(np.split(M_v,250,1))
+                if j>i:
+                    M_v[:,j] = M_v[:,j-1]
+                    M_u[:,j] = M_u[:,j-1]
         
-    if i < nombre_total_fichiers-1:
-        U1[:,i]=M_U_temp[0]
-        V1[:,i]=M_V_temp[0]
+                if j<i:
+                    M_v[:,j] = u
+                    M_u[:,j] = u
+                    
+                if j==np.shape(M_u)[1]-1:
+                    M_U = np.vstack(np.split(M_u,250,1))
+                    M_V = np.vstack(np.split(M_v,250,1))
+        
+        if i > 0:
+                U2[:,i-1]=M_U[:,0]
+                V2[:,i-1]=M_V[:,0]
     
-    if i > 0:
-        U2[:,i-1]=M_U_temp[0]
-        V2[:,i-1]=M_V_temp[0]  
+        
 
 ## calcul sur les champs fluctuants
 #U1mean = np.mean(U1)
